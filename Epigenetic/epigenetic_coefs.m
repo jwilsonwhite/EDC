@@ -9,15 +9,16 @@ function Coef = epigenetic_coefs
 % At this time, larval length effects are not included
 
 % Add deformity mortality. Assume deformities represent a proportional
-% increase in mortality. 
+% increase in mortality. All coefficients are [mean, CV]
 
-% F0 effects (reduced deformites...not included because WTF)
+% F0 effects from DeCourten et al. 2020 (reduced deformites...not included because WTF)
 Coef(1).DeformF0(1).EE2.c = [1,0];
 Coef(1).DeformF0(1).Bif.c = [NaN,NaN];
 Coef(1).DeformF0(1).TB.c = [NaN,NaN];
 Coef(1).DeformF0(1).Levo.c = [1,0];
 
 
+% F1 Deformity effects from DeCourten et al. 2020
 %For EE2, 0.35 vs control 0.1. 250% increase. SD = 0.15, so CV = 0.15/0.35
 Coef(1).DeformF1(1).EE2.c = [2.5, 0.15/0.35];
 Coef(1).DeformF1(1).Bif.c = [1 0];
@@ -49,6 +50,11 @@ Coef(1).HatchSize(1).EE2.c = [1, 0.1 ];
 Coef(1).HatchSize(1).Bif.c = [0, 0 ];
 Coef(1).HatchSize(1).TB.c = [1, 0.1 ];
 Coef(1).HatchSize(1).Levo.c = [1, 0.1 ];
+
+Coef(1).HatchSizeF2(1).EE2.c = [0.5, 0.1 ];
+Coef(1).HatchSizeF2(1).Bif.c = [0, 0 ];
+Coef(1).HatchSizeF2(1).TB.c = [0, 0 ];
+Coef(1).HatchSizeF2(1).Levo.c = [0, 0 ];
 
 % Atresia
 % EE2 exposure = 65%
@@ -84,5 +90,17 @@ Coef(1).LarvSurvF2(1).EE2.c = [0.8824, 15/75];
 Coef(1).LarvSurvF2(1).Bif.c = [1,0];
 Coef(1).LarvSurvF2(1).TB.c = [1,0 ];
 Coef(1).LarvSurvF2(1).Levo.c = [65/85, 7/85 ];
+
+% Egg production F0
+Coef(1).EggProdF0(1).EE2.c = [1, 0];
+Coef(1).EggProdF0(1).Bif.c = [5/8,3/5];
+Coef(1).EggProdF0(1).TB.c = [1,0 ];
+Coef(1).EggProdF0(1).Levo.c = [1, 0 ];
+
+% Egg production F1
+Coef(1).EggProdF1(1).EE2.c = [6/21, 5/6];
+Coef(1).EggProdF1(1).Bif.c = [8/21, 5/8];
+Coef(1).EggProdF1(1).TB.c = [2/21, 10/2];
+Coef(1).EggProdF1(1).Levo.c = [9/21, 5/9];
 
 

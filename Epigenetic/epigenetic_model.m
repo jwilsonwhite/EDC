@@ -17,7 +17,7 @@ if ~exist('paternal_meth_only','var');paternal_meth_only = false;end
 if ~exist('chemical','var'); chemical = 'EE2';end
 
 % Move some of this to a params file?
-T = 16*6; % length of simulation
+T = 20*6; % length of simulation
 Amax = 12; % maximum age of any individual
 Age = 1:Amax;
 MatF = [50 1]; % mean & SD of maturity ogive 
@@ -26,7 +26,7 @@ Sex = {'f','m'};
 % [Linf k CV_L M ismat repro_c repro_e mean_r_size sd_r_size]
 fixparmM = [130, 0.24, 0.1, 0.35, 20, 1e-3, 3, 9.5, 1];
 fixparmF = [130, 0.24, 0.1, 0.35, 20, 1e-3, 3, 9.5, 1];
-
+Coef = epigenetic_coefs;
 
 % Bev-Holt
 alfa = 0.31;
@@ -65,7 +65,7 @@ Exposure(74:76) = 1;
 
 case 'Chronic'
 % Chronic exposure:
-Exposure(71:end) = 1;
+Exposure(74:end) = 1;
 end % end switch exposure type
 
 
@@ -74,7 +74,7 @@ Temp = 25*ones(1,T); % water temperature in each time step
 % Temp data: From CDMO (SF Bay NERR), 1st Mallard Station. Approximate
 % range is 8 to 23 ºC annually.
 % But currently the model has a breakpoint temp of 25º so vary accordingly
-Temp = (sin(((1:T)-1)/6*2*pi)/2+0.5)*(30-20)+20;
+Temp = (sin(((1:T)-1)/6*2*pi)/2+0.5)*(30-20)+20; % NEED TO FIX THIS SO IT'S REALISTIC
 
 % Have to initialize first T0 years to build up backlog of epigenetic
 % history
@@ -203,6 +203,21 @@ for t = (T0+1):T
             
             % Add new recruits to the appropriate age, pa, gpa vector
             R = (Symat.*K_r)*N(:,a,1,pa,gpa,t-1);
+            
+            % Add effect of F0 hatch success
+            c = Coef(1).HatchSuccessF0(1).(chemical).c;
+            if RandSim
+            R_factor = normrnd(c(1),c(2)*c(1)); 
+            elseif RangeSim
+            if Index == 1; R_factor = c(1);
+            elseif Index == 2; R_factor = c(1)+1.96*c(2)*c(1);
+            elseif Index == 3; R_factor = c(1)-1.96*c(2)*c(1);
+            end
+            else R_factor = c(1);
+            end 
+            
+            R = R*R_factor;
+            
             Rect_tmp_tmp(:,1,a,pa,gpa) = R*(1-SR_offspring); % female recruits
             Rect_tmp_tmp(:,2,a,pa,gpa) = R*SR_offspring; % male recruits
             
@@ -240,7 +255,7 @@ for t = (T0+1):T
     
  %   Sy(:)'*sum(sum(sum(Rect_DD,4),3),2)
     
-   % if t == 58; keyboard; end
+    if t == 27; keyboard; end
    % keyboard
     %--------------------------
     

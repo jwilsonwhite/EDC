@@ -11,9 +11,11 @@ if ~exist('temp','var'); temp = NaN; end
 if ~exist('SR','var'); SR = 0.5; end
 if ~exist('isMatF','var'); isMatF = 1; end
 
-% turn of epigenetics if desired
-if ~epiF1; exposure_p = exposure_p*0; end
-if ~epiF2; exposure_gp = exposure_gp*0; exposure_vec = exposure_vec*0;  end
+% turn off epigenetics if desired
+if ~epiF1; exposure_p = exposure_p*0; F_dist = F_dist.*0; end
+if ~epiF2; exposure_gp = exposure_gp*0; GF_dist = GF_dist.*0;   end
+% this next line does not do the right thing, but that feature is
+% deprecated
 if paternal_meth_only;  exposure_vec = exposure_vec*0;  end
 y = x;
 %this creates a vector (y) that is equal to x
